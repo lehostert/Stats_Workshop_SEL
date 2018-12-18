@@ -1,4 +1,4 @@
-# Stream Ecology Lab Stats Workshop
+# INHS Stream Ecology Lab Stats Workshop
 
 ## References
 
