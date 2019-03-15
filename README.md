@@ -1,5 +1,7 @@
 # INHS Stream Ecology Lab R Stats Workshop
 
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/lehostert/Stream_Ecology_Lab_Stats_Workshop/master?urlpath=rstudio)
+
 ## References
 
 ### Random Forest
