@@ -5,16 +5,16 @@ library(vegan)
 # Allows you to do things similar tobase R but makes the syntax consistent
 
 # readxl
-# pc file_path <- "~/GitHub/Stream_Ecology_Lab_Stats_Workshop/Tidyverse/Example_Fish_Data.xlsx"
-file_path <- "~/Documents/GitHub/Stream_Ecology_Lab_Stats_Workshop/Tidyverse/Example_Fish_Data.xlsx"
+file_path <- stringr::str_c(getwd(), "/Tidyverse/Example_Fish_Data.xlsx")
 
-#Load xlsx files or xls files directly. Call the sheet # or the Sheet name. 
+#Load xlsx files or xls files directly. Call the sheet # or the Sheet name.
 fish <- readxl::read_excel(file_path, sheet = "Fish" )
 
-#Alternatively you can load the data as a csv. 
-fish_base_csv <- read.csv("~/GitHub/Stream_Ecology_Lab_Stats_Workshop/Tidyverse/Example_Fish_Data.csv", header = T, stringsAsFactors = F)
+#Alternatively you can load the data as a csv.
+csv_file_path <- stringr::str_c(getwd(), "/Tidyverse/Example_Fish_Data.csv")
+fish_base_csv <- read.csv(csv_file_path, header = T, stringsAsFactors = F)
 
-fish_tidy_csv <- readr::read_csv("~/GitHub/Stream_Ecology_Lab_Stats_Workshop/Tidyverse/Example_Fish_Data.csv")
+fish_tidy_csv <- readr::read_csv(csv_file_path)
 
 # Introduce teh idea of pipes. They are used in several other programming languages like F# but you can think of them as the statement "then"
 
