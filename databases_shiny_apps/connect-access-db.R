@@ -4,7 +4,7 @@ library(dbplyr) #This package will help interface with databases by translating 
 library(RODBC)
 library(odbc)
 library(DBI)
-# library(sqldf)
+# library(sqldf) # This package might help with more sophisticated SQL queries
 
 
 ### with RODBC
@@ -23,26 +23,7 @@ odbcCloseAll() # At the end of an R session please remember to close the connect
 
 
 ### with odbc
-odbcListDrivers()
-# 
-
-# 
-# con <- dbConnect(odbc::odbc(), dsn = "Microsoft Access Driver (*.mdb, *.accdb)")
-# odbc_result <- dbReadTable(con, "Fish_Abundance")
-# as_tibble(odbc_result)
-# 
-# # pass MS Access file path to connection string
-file_path <- "~/CREP/Database/CREP_Database.accdb"
-accdb_con <- dbConnect(drv = odbc(), Driver="{Microsoft Access Driver (*.mdb, *.accdb)}",
-                       Database="~/CREP/Database/CREP_Database.accdb")
-
-#########
-con2 <- dbConnect(odbc::odbc(), 
-                  Driver= "MS Access Database"
-                  Data)
-
-
-#######
+odbcListDrivers() # to get a list of the drivers your computer knows about 
 con <- dbConnect(odbc::odbc(), "2019_CREP_Database")
 dbListTables(con) # To get the list of tables in the database
 
@@ -58,7 +39,7 @@ dbGetQuery() # Use this for SELECT queries only
 # sql() allows you to write SQL queries directly
 
 
-fish_locations <- as_tibble(tbl(con, sql("SELECT DISTINCT Fish_Abundance.PU_Gap_Code, Fish_Abundance.Reach_Name, Fish_Abundance.Event_Date, 
+fish_locations_sql <- as_tibble(tbl(con, sql("SELECT DISTINCT Fish_Abundance.PU_Gap_Code, Fish_Abundance.Reach_Name, Fish_Abundance.Event_Date, 
                                           Established_Locations.Site_Type, Established_Locations.Latitude, 
                                           Established_Locations.Longitude, Established_Locations.Stream_Name 
                                        FROM Fish_Abundance LEFT JOIN Established_Locations 
@@ -66,7 +47,12 @@ fish_locations <- as_tibble(tbl(con, sql("SELECT DISTINCT Fish_Abundance.PU_Gap_
                                        AND (Fish_Abundance.Reach_Name = Established_Locations.Reach_Name)")))
 
 
+fish_locations_tidyverse <- as_tibble(tbl(con, "Fish_Abundance")) %>% 
+  left_join(as_tibble(tbl(con, "Established_Locations"))) %>% 
+  select(PU_Gap_Code, Reach_Name, Event_Date, SiteType, Latitude, Longitude, Stream_Name) %>% 
+  distinct()
 
+#### Close your database connection ####
 odbcCloseAll()
 dbDisconnect()
 
