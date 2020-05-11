@@ -24,6 +24,7 @@
 5. Click **Add**
 
 ![Add New Data Source](images/Inked_Add_ODBC_data_source_2.jpg)
+
 6. Select the "Microsoft Access Driver (\*.mdb, \*.accdb)" driver type to use, and then click **Finish**.
 
 ![Select Data Source Type](images/Add_ODBC_data_source_3.PNG)
@@ -46,7 +47,10 @@
     - Once connected with the database this library will allow you to put things out of the database
 
 ### Connect to the database, Run your analysis, and Close the connection
-`connection <- dbConnect(odbc::odbc(), "My_Database")`  
-`odbc_result <- DBI::dbReadTable(connection, "Fish_Abundance")`  
-`as_tibble(odbc_result)` #You can now use  the result as a typical tibble  
-`odbcCloseAll()`   #When you are finished be sure to sever the connection to the database
+
+```R
+connection <- dbConnect(odbc::odbc(), "My_Database")
+odbc_result <- DBI::dbReadTable(connection, "Fish_Abundance")
+as_tibble(odbc_result)` #You can now use  the result as a typical tibble
+odbcCloseAll()`   #When you are finished be sure to sever the connection to the database
+```
