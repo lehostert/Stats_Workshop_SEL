@@ -32,25 +32,38 @@ result_dbi<- as_tibble(odbc_result) # Use as_tibble() turn the dataframe as a ti
 
 result_dplyr <- as_tibble(tbl(con, "Fish_Abundance")) # OR directly return the data table from the database as a tibble
 
-dbGetQuery() # Use this for SELECT queries only
+#### Conducting Queries ####
+## Using DBI and SQL 
+abc <- DBI::dbGetQuery(con, "SELECT DISTINCT Fish_Abundance.PU_Gap_Code, Fish_Abundance.Reach_Name, Fish_Abundance.Event_Date, 
+                                          Established_Locations.Site_Type, Established_Locations.Latitude, 
+                                          Established_Locations.Longitude, Established_Locations.Stream_Name 
+                                       FROM Fish_Abundance LEFT JOIN Established_Locations 
+                                       ON (Fish_Abundance.PU_Gap_Code = Established_Locations.PU_Gap_Code) 
+                                       AND (Fish_Abundance.Reach_Name = Established_Locations.Reach_Name)") 
 
-# If you want conduct more sophistcated queries use the tbL() function along with sql() both are from dplyr()
-# tbl() this is a generic method for creating a table from a datasource
-# sql() allows you to write SQL queries directly
+# You can use this for SELECT queries only not queries that involve amnipulation. 
 
 
+
+## Using dplyr and SQL 
 fish_locations_sql <- as_tibble(tbl(con, sql("SELECT DISTINCT Fish_Abundance.PU_Gap_Code, Fish_Abundance.Reach_Name, Fish_Abundance.Event_Date, 
                                           Established_Locations.Site_Type, Established_Locations.Latitude, 
                                           Established_Locations.Longitude, Established_Locations.Stream_Name 
                                        FROM Fish_Abundance LEFT JOIN Established_Locations 
                                        ON (Fish_Abundance.PU_Gap_Code = Established_Locations.PU_Gap_Code) 
                                        AND (Fish_Abundance.Reach_Name = Established_Locations.Reach_Name)")))
+# tbl() this is a generic method for creating a table from a datasource. In this case the source is our database connection called "con"
+# sql() allows you to write SQL queries directly
+# as_tibble() qill turn the resulting object into a tibble/data.frame
 
-
+# Using dplyr and tidyverse syntax
 fish_locations_tidyverse <- as_tibble(tbl(con, "Fish_Abundance")) %>% 
-  left_join(as_tibble(tbl(con, "Established_Locations"))) %>% 
-  select(PU_Gap_Code, Reach_Name, Event_Date, SiteType, Latitude, Longitude, Stream_Name) %>% 
+  left_join(as_tibble(tbl(con, "Established_Locations")), by = c("PU_Gap_Code", "Reach_Name")) %>% 
+  select(PU_Gap_Code, Reach_Name, Event_Date, Site_Type, Latitude, Longitude, Stream_Name) %>% 
   distinct()
+
+
+## NOTE that if you don't specify the "by" for the join dplyr will automatically use all of the fields that are the same between the two tables. 
 
 #### Close your database connection ####
 odbcCloseAll()
