@@ -19,7 +19,7 @@
 2. In the **Control Panel**, click **Administrative Tools**
 3. In the **Administrative Tools** windows select **ODBC Data Sources (64-bit)** unless you want to make a 32-bit driver. This will be dependant on which version (32-bit or 64-bit) you are running of Access.
 
-![ODBC Data Sources](/images/Add_ODBC_data_source.PNG)
+![ODBC Data Sources](images/Add_ODBC_data_source.PNG)
 4. For adding a database is the local to your computer select the **User DSN** tab.
 5. Click **Add**
 
