@@ -23,21 +23,21 @@
 4. For adding a database is the local to your computer select the **User DSN** tab.
 5. Click **Add**
 
-![Add New Data Source](/images/Inked_Add_ODBC_data_source_2.jpg)
+![Add New Data Source](images/Inked_Add_ODBC_data_source_2.jpg)
 6. Select the "Microsoft Access Driver (\*.mdb, \*.accdb)" driver type to use, and then click **Finish**.
 
-![Select Data Source Type](/images/Add_ODBC_data_source_3.PNG)
+![Select Data Source Type](images/Add_ODBC_data_source_3.PNG)
 
 7. Follow the instructions and enter the "Data Source Name" and a short Description of the database and click the "Select" button to navigate to the location of your database on your local machine.
 
-![MS Access Data Setup](/images/ODBC_MS_Access_Setup.PNG)
-![MS Access Database location](/images/ODBC_MS_Access_Setup_File_Navigation.PNG)
+![MS Access Data Setup](images/ODBC_MS_Access_Setup.PNG)
+![MS Access Database location](images/ODBC_MS_Access_Setup_File_Navigation.PNG)
 
 8. Click **OK** in the **Select Database** window then **OK** in the **ODBC Microsoft Access Setup** window
 
 9. You should now see your newly created database driver in the list of available  User Data Sources
 
-![MS Access Data Setup Success](/images/ODBC_MS_Access_Driver_Setup.PNG)
+![MS Access Data Setup Success](images/ODBC_MS_Access_Driver_Setup.PNG)
 
 ### Install and load packages in R
 - `library(ODBC)`
