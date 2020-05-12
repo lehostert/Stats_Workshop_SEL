@@ -40,25 +40,29 @@
 ![MS Access Data Setup Success](images/ODBC_MS_Access_Driver_Setup.PNG)
 
 ### Install and load packages in R
-`library(ODBC)`
-    - This is the library that will establish a connection between your Access DB and your R session  
-`library(DBI)`
-    - Once connected with the database this library will allow you to put things out of the database  
-`library(tidyverse)`
-        - This will load the base  packages from the tidyverse including dplyr which can help you manipulate the data tables and run SQL queries
+`install.packages(c("odbc", "DBI", "tidyverse"))`
+    - Install packages if you do not already have them on your computer
 
-### Connect to the database, Run your analysis, and Close the connection
+`library(odbc))`
+    - This is the library that will help DBI functions efficiently use the ODBC driver that you created in the earlier step. Without this it is more difficult for DBI fucntions to establish a connection between your Access DB and your R session.  
+`library(DBI)`
+    - This library will allow you to connect to the database and interact with it  
+`library(tidyverse)`
+        - This will load the base packages from the tidyverse including dplyr which can help you manipulate the data tables and run SQL queries
+
+### Connect to your database
 
 ```R
 connection <- DBI::dbConnect(odbc::odbc(), "My_Database")
-dbListTables(connection) # Get the list of tables in the database that is now connected
-odbc_result <- DBI::dbReadTable(connection, "Fish_Abundance") # Pull out specific tables from DB
+dbListTables(connection) # Get the list of tables in the database that is now connected to your R session
+odbc_result <- DBI::dbReadTable(connection, "Fish_Abundance") # Pull out specific tables from DB, in this case a Fish Abundance table
 as_tibble(odbc_result)` # Turn those tables into tibbles to use with dplyr functions
 ```
 ### Conducting queries
 
 #### Using DBI and SQL
 
+ Using DBI functions and an SQL query the result is a data.frame.
 ```R
 fish_locations_sql_dbi <- DBI::dbGetQuery(connection, "SELECT DISTINCT Fish_Abundance.PU_Gap_Code, Fish_Abundance.Reach_Name, Fish_Abundance.Event_Date,
                                           Established_Locations.Site_Type, Established_Locations.Latitude,
@@ -69,6 +73,7 @@ fish_locations_sql_dbi <- DBI::dbGetQuery(connection, "SELECT DISTINCT Fish_Abun
 ```
 #### Using dplyr and SQL
 
+Using dplyr functions and an SQL query the result is a tibble data.frame.
 ```R
 fish_locations_sql_dplyr <- as_tibble(tbl(connection, sql("SELECT DISTINCT Fish_Abundance.PU_Gap_Code, Fish_Abundance.Reach_Name, Fish_Abundance.Event_Date,
                                           Established_Locations.Site_Type, Established_Locations.Latitude,
@@ -79,6 +84,7 @@ fish_locations_sql_dplyr <- as_tibble(tbl(connection, sql("SELECT DISTINCT Fish_
 ```
 #### Using dplyr
 
+Using dplyr functions and an SQL query the result is a tibble data.frame. Using this form you can use other functions from the tidyverse to summarize your data in the same code snippet.
 ```R
 fish_locations_tidyverse <- as_tibble(tbl(connection, "Fish_Abundance")) %>%
   left_join(as_tibble(tbl(connection, "Established_Locations")), by = c("PU_Gap_Code", "Reach_Name")) %>%
